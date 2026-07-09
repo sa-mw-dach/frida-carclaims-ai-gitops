@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frida-carclaims-stage
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: frida-carclaims
+    environment: stage
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sa-mw-dach/frida-carclaims-ai-gitops.git
+    targetRevision: main
+    path: charts/frida-carclaims
+    helm:
+      valueFiles:
+        - ../../environments/cluster.yaml
+        - ../../environments/stage/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frida-carclaims-stage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,54 @@
+{{- if .Values.backend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voice-backend
+  namespace: {{ include "frida-carclaims.namespace" . }}
+  labels:
+    app: voice-backend
+    {{- include "frida-carclaims.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: voice-backend
+  template:
+    metadata:
+      labels:
+        app: voice-backend
+    spec:
+      containers:
+        - name: voice-backend
+          image: {{ include "frida-carclaims.backend.image" . }}
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: voice-backend-config
+          env:
+            - name: LITELLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend.secrets.name }}
+                  key: LITELLM_API_KEY
+            - name: WHISPER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend.secrets.name }}
+                  key: WHISPER_API_KEY
+                  optional: true
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+{{- end }}

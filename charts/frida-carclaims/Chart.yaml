@@ -1,0 +1,6 @@
+apiVersion: v2
+name: frida-carclaims
+description: Helm chart for the Frida Car Claims AI stack (frontend, voice backend, whisper)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

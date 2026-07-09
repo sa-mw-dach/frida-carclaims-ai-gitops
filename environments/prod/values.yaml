@@ -1,0 +1,24 @@
+global:
+  namespace: frida-carclaims-prod
+  partOf: frida-carclaims
+  environment: prod
+
+frontend:
+  replicas: 2
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-frontend
+    tag: latest
+
+backend:
+  replicas: 2
+  serviceName: frida-carclaims-prod
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-backend-ai
+    tag: latest
+  config:
+    litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
+    chatModel: "Qwen3.6-35B-A3B"
+    whisperBaseUrl: "http://whisper.frida-carclaims-prod.svc.cluster.local:8000/inference"
+
+whisper:
+  enabled: true

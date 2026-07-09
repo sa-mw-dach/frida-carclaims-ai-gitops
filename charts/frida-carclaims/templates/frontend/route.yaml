@@ -1,0 +1,19 @@
+{{- if and .Values.frontend.enabled .Values.frontend.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: frontend
+  namespace: {{ include "frida-carclaims.namespace" . }}
+  labels:
+    app: frontend
+    {{- include "frida-carclaims.labels" . | nindent 4 }}
+spec:
+  host: {{ include "frida-carclaims.route.host" . | quote }}
+  to:
+    kind: Service
+    name: frontend
+  port:
+    targetPort: http
+  tls:
+    termination: {{ .Values.frontend.route.tls.termination }}
+{{- end }}

@@ -1,0 +1,67 @@
+global:
+  namespace: frida-carclaims-dev
+  partOf: frida-carclaims
+  environment: dev
+  appsDomain: ""
+
+frontend:
+  enabled: true
+  replicas: 1
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-frontend
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  route:
+    enabled: true
+    host: ""
+    tls:
+      termination: edge
+
+backend:
+  enabled: true
+  replicas: 1
+  serviceName: frida-carclaims-dev
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-backend-ai
+    tag: latest
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 512Mi
+  secrets:
+    name: voice-backend-secrets
+  config:
+    litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
+    chatModel: "Qwen3.6-35B-A3B"
+    litellmTimeout: "120s"
+    whisperBaseUrl: "http://whisper.frida-carclaims-dev.svc.cluster.local:8000/inference"
+    logLevelClickKlaassen: "ERROR"
+    logLevelLangchain4j: "ERROR"
+    httpAccessLogEnabled: "false"
+
+whisper:
+  enabled: true
+  replicas: 1
+  image: quay.io/ramalama/ramalama-whisper-server@sha256:377f9a91ba0030548bca8a3845be1c8396bd2255a0aae01e1be43845b1ee5f1e
+  modelUrl: https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin
+  modelPath: /models/ggml-small.bin
+  initImage: curlimages/curl:8.12.1
+  pvcSize: 2Gi
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi

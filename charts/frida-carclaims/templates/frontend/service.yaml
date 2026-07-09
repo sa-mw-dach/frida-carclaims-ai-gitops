@@ -1,0 +1,18 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: {{ include "frida-carclaims.namespace" . }}
+  labels:
+    app: frontend
+    {{- include "frida-carclaims.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+{{- end }}
