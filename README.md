@@ -26,7 +26,7 @@ Production GitOps repository for the Frida Car Claims AI stack, deployed via **H
 ```
 charts/frida-carclaims/       # Helm chart (frontend, backend, whisper)
 environments/
-  cluster.yaml                # Cluster-specific (generated, gitignored)
+  cluster.yaml                # Cluster-specific apps domain (you create this)
   cluster.yaml.example        # Template
   dev/values.yaml
   stage/values.yaml
@@ -34,11 +34,7 @@ environments/
 argocd/
   bootstrap/app-of-apps.yaml
   applications/
-scripts/
-  configure-cluster.sh        # Writes environments/cluster.yaml from env var
-  bootstrap.sh                # First-time cluster install
 docs/promotion.md
-.env.example
 ```
 
 ## Prerequisites
@@ -49,40 +45,31 @@ docs/promotion.md
 
 This is a **public** GitHub repository — ArgoCD can read it over HTTPS without credentials or deploy keys.
 
-## Cluster configuration
+## First-time setup
 
-Before the first deploy, set your cluster's apps domain. This is the only cluster-specific setting required.
+### 1. Create `environments/cluster.yaml`
 
-**Option A — environment variable:**
-
-```bash
-export CLUSTER_APPS_DOMAIN=apps.mycluster.example.com
-./scripts/configure-cluster.sh
-```
-
-**Option B — `.env` file:**
+Copy the example and set your cluster's apps domain:
 
 ```bash
-cp .env.example .env
-# edit CLUSTER_APPS_DOMAIN in .env
-./scripts/configure-cluster.sh
+cp environments/cluster.yaml.example environments/cluster.yaml
 ```
 
-**Discover the domain on OpenShift:**
-
-```bash
-oc get ingresscontroller default -n openshift-ingress-operator \
-  -o jsonpath='{.status.domain}{"\n"}'
-```
-
-This writes `environments/cluster.yaml`:
+Edit `environments/cluster.yaml`:
 
 ```yaml
 global:
   appsDomain: apps.mycluster.example.com
 ```
 
-Route hosts are then computed automatically:
+Discover the domain on OpenShift:
+
+```bash
+oc get ingresscontroller default -n openshift-ingress-operator \
+  -o jsonpath='{.status.domain}{"\n"}'
+```
+
+Route hosts are computed automatically from this value:
 
 | Environment | URL |
 |-------------|-----|
@@ -92,40 +79,49 @@ Route hosts are then computed automatically:
 
 To override a single route host, set `frontend.route.host` in the environment values file.
 
-## Bootstrap (new cluster)
+### 2. Create secrets
+
+The voice backend requires a LiteLLM API key. Create this secret in each namespace before the backend pods can start:
 
 ```bash
-export CLUSTER_APPS_DOMAIN=apps.mycluster.example.com
-./scripts/bootstrap.sh
+oc create secret generic voice-backend-secrets -n frida-carclaims-dev \
+  --from-literal=LITELLM_API_KEY='sk-...'
+
+oc create secret generic voice-backend-secrets -n frida-carclaims-stage \
+  --from-literal=LITELLM_API_KEY='sk-...'
+
+oc create secret generic voice-backend-secrets -n frida-carclaims-prod \
+  --from-literal=LITELLM_API_KEY='sk-...'
 ```
 
-Then create secrets and verify:
+| Secret | Namespaces | Keys |
+|--------|------------|------|
+| `voice-backend-secrets` | dev, stage, prod | `LITELLM_API_KEY` (required), `WHISPER_API_KEY` (optional) |
+
+### 3. Bootstrap ArgoCD
+
+Apply the app-of-apps (one-time):
 
 ```bash
-for ns in frida-carclaims-dev frida-carclaims-stage frida-carclaims-prod; do
-  oc create secret generic voice-backend-secrets -n "$ns" \
-    --from-literal=LITELLM_API_KEY='sk-...' \
-    --dry-run=client -o yaml | oc apply -f -
-done
+oc apply -f argocd/bootstrap/app-of-apps.yaml
+```
 
+This creates the root `frida-carclaims-apps` Application, which deploys dev, stage, and prod.
+
+### 4. Verify
+
+```bash
+argocd app sync frida-carclaims-dev
 curl -sS -o /dev/null -w "%{http_code}\n" \
-  "https://frida-carclaims-dev.${CLUSTER_APPS_DOMAIN}/"
+  "https://frida-carclaims-dev.apps.mycluster.example.com/"
 ```
 
 ## Local validation
 
 ```bash
-export CLUSTER_APPS_DOMAIN=apps.mycluster.example.com
-./scripts/configure-cluster.sh
-
 helm template frida-carclaims charts/frida-carclaims \
   -f environments/cluster.yaml \
   -f environments/dev/values.yaml
-
-# Or pass the domain directly without writing cluster.yaml:
-helm template frida-carclaims charts/frida-carclaims \
-  -f environments/dev/values.yaml \
-  --set global.appsDomain=apps.mycluster.example.com
 ```
 
 ## Promotion workflow

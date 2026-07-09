@@ -28,17 +28,13 @@ Pin immutable tags in environment values files for stage and prod.
 
 ## Cluster URLs
 
-Public URLs depend on your cluster's apps domain. Set it once per session:
-
-```bash
-export CLUSTER_APPS_DOMAIN=apps.mycluster.example.com
-```
+Public URLs depend on `global.appsDomain` in `environments/cluster.yaml`:
 
 | Environment | URL |
 |-------------|-----|
-| dev | `https://frida-carclaims-dev.${CLUSTER_APPS_DOMAIN}/` |
-| stage | `https://frida-carclaims-stage.${CLUSTER_APPS_DOMAIN}/` |
-| prod | `https://frida-carclaims.${CLUSTER_APPS_DOMAIN}/` |
+| dev | `https://frida-carclaims-dev.<appsDomain>/` |
+| stage | `https://frida-carclaims-stage.<appsDomain>/` |
+| prod | `https://frida-carclaims.<appsDomain>/` |
 
 ## Step 1: Deploy to dev
 
@@ -64,7 +60,7 @@ backend:
 ```bash
 argocd app get frida-carclaims-dev
 curl -sS -o /dev/null -w "%{http_code}\n" \
-  "https://frida-carclaims-dev.${CLUSTER_APPS_DOMAIN}/"
+  "https://frida-carclaims-dev.<appsDomain>/"
 ```
 
 ## Step 2: Promote dev → stage
@@ -79,7 +75,7 @@ curl -sS -o /dev/null -w "%{http_code}\n" \
 ```bash
 argocd app get frida-carclaims-stage
 curl -sS -o /dev/null -w "%{http_code}\n" \
-  "https://frida-carclaims-stage.${CLUSTER_APPS_DOMAIN}/"
+  "https://frida-carclaims-stage.<appsDomain>/"
 ```
 
 ## Step 3: Promote stage → prod
@@ -98,7 +94,7 @@ argocd app sync frida-carclaims-prod
 ```bash
 argocd app get frida-carclaims-prod
 curl -sS -o /dev/null -w "%{http_code}\n" \
-  "https://frida-carclaims.${CLUSTER_APPS_DOMAIN}/"
+  "https://frida-carclaims.<appsDomain>/"
 ```
 
 ## Rollback

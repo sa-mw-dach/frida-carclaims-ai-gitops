@@ -1,4 +1,3 @@
 global:
   # OpenShift apps domain, e.g. apps.mycluster.example.com
-  # Generate with: CLUSTER_APPS_DOMAIN=apps.mycluster.example.com ./scripts/configure-cluster.sh
   appsDomain: apps.mycluster.example.com
