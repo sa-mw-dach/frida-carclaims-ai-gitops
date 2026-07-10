@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: frida-carclaims-dev
-  namespace: openshift-gitops
   labels:
     app.kubernetes.io/part-of: frida-carclaims
     environment: dev
