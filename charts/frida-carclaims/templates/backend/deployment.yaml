@@ -33,12 +33,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.backend.secrets.name }}
                   key: LITELLM_API_KEY
-            - name: WHISPER_API_KEY
+            - name: TRANSCRIPTION_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.backend.secrets.name }}
-                  key: WHISPER_API_KEY
-                  optional: true
+                  key: TRANSCRIPTION_API_KEY
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           readinessProbe:
