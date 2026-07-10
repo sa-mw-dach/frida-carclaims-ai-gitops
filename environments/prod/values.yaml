@@ -18,7 +18,6 @@ backend:
   config:
     litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
     chatModel: "Qwen3.6-35B-A3B"
-    # External OpenAI API for transcription
     transcriptionBaseUrl: "https://api.openai.com/v1/"
     transcriptionModel: "whisper-1"
 
