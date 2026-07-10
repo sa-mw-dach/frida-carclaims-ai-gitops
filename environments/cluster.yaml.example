@@ -1,3 +1,0 @@
-global:
-  # OpenShift apps domain, e.g. apps.mycluster.example.com
-  appsDomain: apps.mycluster.example.com

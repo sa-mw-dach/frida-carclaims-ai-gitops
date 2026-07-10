@@ -16,8 +16,10 @@ spec:
     path: charts/frida-carclaims
     helm:
       valueFiles:
-        - ../../environments/cluster.yaml
         - ../../environments/prod/values.yaml
+      parameters:
+        - name: global.appsDomain
+          value: apps.cluster-f4wcp.f4wcp.sandbox2418.opentlc.com
   destination:
     server: https://kubernetes.default.svc
     namespace: frida-carclaims-prod

@@ -26,47 +26,48 @@ Production GitOps repository for the Frida Car Claims AI stack, deployed via **H
 ```
 charts/frida-carclaims/       # Helm chart (frontend, backend, whisper)
 environments/
-  cluster.yaml                # Cluster-specific apps domain (you create this)
-  cluster.yaml.example        # Template
-  dev/values.yaml
-  stage/values.yaml
-  prod/values.yaml
+  dev/values.yaml             # Dev environment configuration
+  stage/values.yaml           # Stage environment configuration
+  prod/values.yaml            # Prod environment configuration
 argocd/
-  bootstrap/app-of-apps.yaml
-  applications/
+  bootstrap/app-of-apps.yaml  # App-of-apps root application
+  applications/               # ArgoCD Applications (dev, stage, prod)
 docs/promotion.md
 ```
 
 ## Prerequisites
 
 - OpenShift cluster with `oc` CLI access
-- ArgoCD installed (OpenShift GitOps operator or upstream ArgoCD)
+- OpenShift GitOps operator installed (provides ArgoCD in `openshift-gitops` namespace)
 - Container images in `quay.io/mklaasse/`
 
 This is a **public** GitHub repository — ArgoCD can read it over HTTPS without credentials or deploy keys.
 
 ## First-time setup
 
-### 1. Create `environments/cluster.yaml`
+### 1. Configure cluster domain
 
-Copy the example and set your cluster's apps domain:
+The cluster's apps domain is configured directly in the ArgoCD Application manifests (`argocd/applications/*.yaml`) via Helm parameters. 
+
+Discover your cluster's apps domain:
 
 ```bash
-cp environments/cluster.yaml.example environments/cluster.yaml
+oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
 ```
 
-Edit `environments/cluster.yaml`:
+Update the `global.appsDomain` parameter in each application file:
+- `argocd/applications/dev.yaml`
+- `argocd/applications/stage.yaml`
+- `argocd/applications/prod.yaml`
 
+Example:
 ```yaml
-global:
-  appsDomain: apps.mycluster.example.com
-```
-
-Discover the domain on OpenShift:
-
-```bash
-oc get ingresscontroller default -n openshift-ingress-operator \
-  -o jsonpath='{.status.domain}{"\n"}'
+spec:
+  source:
+    helm:
+      parameters:
+        - name: global.appsDomain
+          value: apps.cluster-abc123.example.com
 ```
 
 Route hosts are computed automatically from this value:
@@ -100,13 +101,13 @@ oc create secret generic voice-backend-secrets -n frida-carclaims-prod \
 
 ### 3. Bootstrap ArgoCD
 
-Apply the app-of-apps (one-time):
+Apply the app-of-apps to the OpenShift GitOps namespace (one-time):
 
 ```bash
 oc apply -f argocd/bootstrap/app-of-apps.yaml
 ```
 
-This creates the root `frida-carclaims-apps` Application, which deploys dev, stage, and prod.
+This creates the root `frida-carclaims-apps` Application in the `openshift-gitops` namespace, which deploys dev, stage, and prod environments.
 
 ### 4. Verify
 
@@ -120,8 +121,8 @@ curl -sS -o /dev/null -w "%{http_code}\n" \
 
 ```bash
 helm template frida-carclaims charts/frida-carclaims \
-  -f environments/cluster.yaml \
-  -f environments/dev/values.yaml
+  -f environments/dev/values.yaml \
+  --set global.appsDomain=apps.mycluster.example.com
 ```
 
 ## Promotion workflow
