@@ -18,7 +18,7 @@ backend:
     chatModel: "deepseek-r1-distill-qwen-14b"
     litellmTimeout: "120s"
     transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
-    transcriptionModel: "whisper-small"
+    transcriptionModel: "66a6383b-bbd8-44fa-b128-7c2902263ead"
     logLevelClickKlaassen: "INFO"
     logLevelLangchain4j: "INFO"
     httpAccessLogEnabled: "true"
