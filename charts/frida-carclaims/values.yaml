@@ -45,23 +45,10 @@ backend:
     litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
     chatModel: "Qwen3.6-35B-A3B"
     litellmTimeout: "120s"
-    whisperBaseUrl: "http://whisper.frida-carclaims-dev.svc.cluster.local:8000/inference"
+    # Audio transcription configuration (OpenAI-compatible)
+    transcriptionBaseUrl: "https://api.openai.com/v1/"
+    transcriptionModel: "whisper-1"
     logLevelClickKlaassen: "ERROR"
     logLevelLangchain4j: "ERROR"
     httpAccessLogEnabled: "false"
 
-whisper:
-  enabled: true
-  replicas: 1
-  image: quay.io/ramalama/ramalama-whisper-server@sha256:377f9a91ba0030548bca8a3845be1c8396bd2255a0aae01e1be43845b1ee5f1e
-  modelUrl: https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin
-  modelPath: /models/ggml-small.bin
-  initImage: curlimages/curl:8.12.1
-  pvcSize: 2Gi
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: "2"
-      memory: 4Gi

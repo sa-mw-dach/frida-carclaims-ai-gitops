@@ -11,7 +11,8 @@ data:
   LITELLM_BASE_URL: {{ .Values.backend.config.litellmBaseUrl | quote }}
   CHAT_MODEL: {{ .Values.backend.config.chatModel | quote }}
   LITELLM_TIMEOUT: {{ .Values.backend.config.litellmTimeout | quote }}
-  WHISPER_BASE_URL: {{ .Values.backend.config.whisperBaseUrl | quote }}
+  TRANSCRIPTION_BASE_URL: {{ .Values.backend.config.transcriptionBaseUrl | quote }}
+  TRANSCRIPTION_MODEL: {{ .Values.backend.config.transcriptionModel | quote }}
   QUARKUS_LOG_CATEGORY__CLICK_KLAASSEN__LEVEL: {{ .Values.backend.config.logLevelClickKlaassen | quote }}
   QUARKUS_LOG_CATEGORY__IO_QUARKIVERSE_LANGCHAIN4J__LEVEL: {{ .Values.backend.config.logLevelLangchain4j | quote }}
   QUARKUS_HTTP_ACCESS_LOG_ENABLED: {{ .Values.backend.config.httpAccessLogEnabled | quote }}

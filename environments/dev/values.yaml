@@ -16,7 +16,7 @@ backend:
   config:
     litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
     chatModel: "Qwen3.6-35B-A3B"
-    whisperBaseUrl: "http://whisper.frida-carclaims-dev.svc.cluster.local:8000/inference"
+    # External OpenAI API for transcription
+    transcriptionBaseUrl: "https://api.openai.com/v1/"
+    transcriptionModel: "whisper-1"
 
-whisper:
-  enabled: true
