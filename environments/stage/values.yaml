@@ -19,7 +19,7 @@ backend:
     litellmTimeout: "120s"
     transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
     transcriptionModel: "whisper-small"
-    logLevelClickKlaassen: "INFO"
-    logLevelLangchain4j: "INFO"
+    logLevelClickKlaassen: "WARN"
+    logLevelLangchain4j: "WARN"
     httpAccessLogEnabled: "true"
 

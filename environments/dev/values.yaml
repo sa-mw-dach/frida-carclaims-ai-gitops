@@ -19,7 +19,7 @@ backend:
     litellmTimeout: "120s"
     transcriptionBaseUrl: "https://api.openai.com/v1/"
     transcriptionModel: "whisper-1"
-    logLevelClickKlaassen: "INFO"
-    logLevelLangchain4j: "INFO"
+    logLevelClickKlaassen: "WARN"
+    logLevelLangchain4j: "WARN"
     httpAccessLogEnabled: "true"
 
