@@ -18,7 +18,7 @@ spec:
         - ../../environments/dev/values.yaml
       parameters:
         - name: global.appsDomain
-          value: ""
+          value: apps.ocp4.stormshift.coe.muc.redhat.com
   destination:
     server: https://kubernetes.default.svc
     namespace: frida-car-claims-dev
