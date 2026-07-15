@@ -15,7 +15,7 @@ backend:
     tag: latest
   config:
     chatBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1/"
-    chatModel: "granite-3-2-8b-instruct"
+    chatModel: "openai/deepseek-r1-distill-qwen-14b"
     chatTimeout: "120s"
     transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
     transcriptionModel: "whisper-small"
