@@ -19,7 +19,7 @@ backend:
     chatTimeout: "120s"
     transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
     transcriptionModel: "whisper-small"
-    logLevelClickKlaassen: "WARN"
-    logLevelLangchain4j: "WARN"
+    logLevelClickKlaassen: "INFO"
+    logLevelLangchain4j: "INFO"
     httpAccessLogEnabled: "true"
 
