@@ -21,7 +21,7 @@ spec:
           value: ""
   destination:
     server: https://kubernetes.default.svc
-    namespace: frida-carclaims-stage
+    namespace: frida-car-claims-stage
   syncPolicy:
     automated:
       prune: true

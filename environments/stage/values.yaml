@@ -1,5 +1,5 @@
 global:
-  namespace: frida-carclaims-stage
+  namespace: frida-car-claims-stage
   partOf: frida-carclaims
   environment: stage
 

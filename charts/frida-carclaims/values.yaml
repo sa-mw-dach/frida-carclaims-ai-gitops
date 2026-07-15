@@ -1,5 +1,5 @@
 global:
-  namespace: frida-carclaims-dev
+  namespace: frida-car-claims-dev
   partOf: frida-carclaims
   environment: dev
   appsDomain: ""

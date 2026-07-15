@@ -1,5 +1,5 @@
 global:
-  namespace: frida-carclaims-prod
+  namespace: frida-car-claims-prod
   partOf: frida-carclaims
   environment: prod
 

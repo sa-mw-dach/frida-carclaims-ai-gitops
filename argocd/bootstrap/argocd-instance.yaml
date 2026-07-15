@@ -35,8 +35,8 @@ spec:
         memory: 128Mi
   sourceNamespaces:
     - frida-car-claims-dev
-    - frida-carclaims-stage
-    - frida-carclaims-prod
+    - frida-car-claims-stage
+    - frida-car-claims-prod
   rbac:
     defaultPolicy: ''
     policy: |
