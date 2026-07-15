@@ -28,11 +28,11 @@ spec:
             - configMapRef:
                 name: voice-backend-config
           env:
-            - name: LITELLM_API_KEY
+            - name: CHAT_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.backend.secrets.name }}
-                  key: LITELLM_API_KEY
+                  key: CHAT_API_KEY
             - name: TRANSCRIPTION_API_KEY
               valueFrom:
                 secretKeyRef:

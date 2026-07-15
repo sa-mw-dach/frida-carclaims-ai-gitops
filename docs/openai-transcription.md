@@ -22,19 +22,19 @@ Add the transcription API key to each environment:
 ```bash
 # Dev
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key' \
+  --from-literal=CHAT_API_KEY='your-chat-key' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-your-openai-key' \
   --dry-run=client -o yaml | oc apply -f - -n frida-carclaims-dev
 
 # Stage  
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key' \
+  --from-literal=CHAT_API_KEY='your-chat-key' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-your-openai-key' \
   --dry-run=client -o yaml | oc apply -f - -n frida-carclaims-stage
 
 # Prod
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key' \
+  --from-literal=CHAT_API_KEY='your-chat-key' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-your-openai-key' \
   --dry-run=client -o yaml | oc apply -f - -n frida-carclaims-prod
 ```
@@ -110,7 +110,7 @@ Increase the timeout if needed:
 ```yaml
 backend:
   config:
-    litellmTimeout: "180s"
+    chatTimeout: "180s"
 ```
 
 ## References

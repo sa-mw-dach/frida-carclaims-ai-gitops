@@ -42,9 +42,9 @@ backend:
   secrets:
     name: voice-backend-secrets
   config:
-    litellmBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
+    chatBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
     chatModel: "Qwen3.6-35B-A3B"
-    litellmTimeout: "120s"
+    chatTimeout: "120s"
     # Audio transcription configuration (OpenAI-compatible)
     transcriptionBaseUrl: "https://api.openai.com/v1/"
     transcriptionModel: "whisper-1"

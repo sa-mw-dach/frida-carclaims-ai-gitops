@@ -9,7 +9,7 @@ Production GitOps repository for the Frida Car Claims AI stack, deployed via **H
 | **Frontend** | React SPA + nginx reverse proxy (public Route) |
 | **Voice backend** | Quarkus API for voice-to-form extraction (ClusterIP) |
 | **Whisper** | In-cluster speech-to-text (ClusterIP + PVC) |
-| **LiteLLM / Qwen** | External LLM service (ConfigMap + Secret) |
+| **Chat API / Qwen** | External LLM service (ConfigMap + Secret) |
 
 ## Environments
 
@@ -82,22 +82,22 @@ To override a single route host, set `frontend.route.host` in the environment va
 
 ### 2. Create secrets
 
-The voice backend requires a LiteLLM API key. Create this secret in each namespace before the backend pods can start:
+The voice backend requires a Chat API API key. Create this secret in each namespace before the backend pods can start:
 
 ```bash
 oc create secret generic voice-backend-secrets -n frida-carclaims-dev \
-  --from-literal=LITELLM_API_KEY='sk-...'
+  --from-literal=CHAT_API_KEY='sk-...'
 
 oc create secret generic voice-backend-secrets -n frida-carclaims-stage \
-  --from-literal=LITELLM_API_KEY='sk-...'
+  --from-literal=CHAT_API_KEY='sk-...'
 
 oc create secret generic voice-backend-secrets -n frida-carclaims-prod \
-  --from-literal=LITELLM_API_KEY='sk-...'
+  --from-literal=CHAT_API_KEY='sk-...'
 ```
 
 | Secret | Namespaces | Keys |
 |--------|------------|------|
-| `voice-backend-secrets` | dev, stage, prod | `LITELLM_API_KEY` (required), `WHISPER_API_KEY` (optional) |
+| `voice-backend-secrets` | dev, stage, prod | `CHAT_API_KEY` (required), `TRANSCRIPTION_API_KEY` (required) |
 
 ### 3. Bootstrap ArgoCD
 
@@ -148,5 +148,5 @@ CI in those repos pushes SHA-tagged images. Update `environments/*/values.yaml` 
 Browser → OpenShift Route → frontend (nginx)
                               └─ /api/* → backend Service → voice-backend pod
                                                             ├─ whisper (STT)
-                                                            └─ LiteLLM (external LLM)
+                                                            └─ Chat API (external LLM)
 ```

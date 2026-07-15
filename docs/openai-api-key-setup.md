@@ -35,7 +35,7 @@ Now create the secret in your OpenShift cluster for each environment:
 
 ```bash
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key-here' \
+  --from-literal=CHAT_API_KEY='your-chat-key-here' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-proj-your-openai-key-here' \
   --namespace=frida-carclaims-dev \
   --dry-run=client -o yaml | oc apply -f -
@@ -45,7 +45,7 @@ oc create secret generic voice-backend-secrets \
 
 ```bash
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key-here' \
+  --from-literal=CHAT_API_KEY='your-chat-key-here' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-proj-your-openai-key-here' \
   --namespace=frida-carclaims-stage \
   --dry-run=client -o yaml | oc apply -f -
@@ -55,7 +55,7 @@ oc create secret generic voice-backend-secrets \
 
 ```bash
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key-here' \
+  --from-literal=CHAT_API_KEY='your-chat-key-here' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-proj-your-openai-key-here' \
   --namespace=frida-carclaims-prod \
   --dry-run=client -o yaml | oc apply -f -
@@ -76,7 +76,7 @@ oc get secret voice-backend-secrets -n frida-carclaims-dev -o jsonpath='{.data}'
 Should output:
 ```json
 [
-  "LITELLM_API_KEY",
+  "CHAT_API_KEY",
   "TRANSCRIPTION_API_KEY"
 ]
 ```
@@ -132,7 +132,7 @@ Monitor your OpenAI API usage:
 # Create new key in OpenAI dashboard
 # Update the secret
 oc create secret generic voice-backend-secrets \
-  --from-literal=LITELLM_API_KEY='your-litellm-key' \
+  --from-literal=CHAT_API_KEY='your-chat-key' \
   --from-literal=TRANSCRIPTION_API_KEY='sk-proj-new-key' \
   --namespace=frida-carclaims-dev \
   --dry-run=client -o yaml | oc apply -f -

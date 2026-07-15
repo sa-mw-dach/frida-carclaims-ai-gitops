@@ -14,9 +14,9 @@ backend:
     repository: quay.io/mklaasse/frida-carclaims-backend-ai
     tag: latest
   config:
-    litellmBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1/"
+    chatBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1/"
     chatModel: "deepseek-r1-distill-qwen-14b"
-    litellmTimeout: "120s"
+    chatTimeout: "120s"
     transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
     transcriptionModel: "whisper-small"
     logLevelClickKlaassen: "WARN"
