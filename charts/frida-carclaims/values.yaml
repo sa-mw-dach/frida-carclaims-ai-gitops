@@ -3,6 +3,7 @@ global:
   partOf: frida-carclaims
   environment: dev
   appsDomain: ""
+  skipNamespace: false
 
 frontend:
   enabled: true

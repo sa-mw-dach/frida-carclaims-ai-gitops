@@ -2,6 +2,7 @@ global:
   namespace: frida-car-claims-dev
   partOf: frida-carclaims
   environment: dev
+  skipNamespace: true
 
 frontend:
   image:

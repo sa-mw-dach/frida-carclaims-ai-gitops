@@ -23,5 +23,4 @@ spec:
     server: https://kubernetes.default.svc
     namespace: frida-car-claims-prod
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+    syncOptions: []

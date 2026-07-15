@@ -1,6 +1,8 @@
+{{- if not .Values.global.skipNamespace }}
 apiVersion: v1
 kind: Namespace
 metadata:
   name: {{ include "frida-carclaims.namespace" . }}
   labels:
     {{- include "frida-carclaims.labels" . | nindent 4 }}
+{{- end }}
