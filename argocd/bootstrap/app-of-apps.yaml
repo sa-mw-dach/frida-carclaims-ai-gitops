@@ -12,7 +12,7 @@ spec:
     path: argocd/applications
   destination:
     server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    namespace: frida-car-claims-dev
   syncPolicy:
     automated:
       prune: true

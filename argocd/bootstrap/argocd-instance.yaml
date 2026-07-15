@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: frida-gitops
+  namespace: frida-car-claims-dev
+spec:
+  server:
+    route:
+      enabled: true
+      tls:
+        termination: reencrypt
+  applicationSet:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
+  controller:
+    resources:
+      limits:
+        cpu: "1"
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  repo:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
+  sourceNamespaces:
+    - frida-car-claims-dev
+    - frida-carclaims-stage
+    - frida-carclaims-prod
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, system:cluster-admins, role:admin
+    scopes: '[groups]'
