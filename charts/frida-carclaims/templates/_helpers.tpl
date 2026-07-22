@@ -19,21 +19,3 @@ helm.sh/chart: {{ include "frida-carclaims.chart" . }}
 {{- define "frida-carclaims.backend.image" -}}
 {{- printf "%s:%s" .Values.backend.image.repository .Values.backend.image.tag -}}
 {{- end -}}
-
-{{- define "frida-carclaims.route.host" -}}
-{{- if .Values.frontend.route.host -}}
-{{- .Values.frontend.route.host -}}
-{{- else -}}
-{{- $env := required "global.environment is required (dev, stage, or prod)" .Values.global.environment -}}
-{{- $domain := required "global.appsDomain is required (e.g. apps.mycluster.example.com)" .Values.global.appsDomain -}}
-{{- if eq $env "prod" -}}
-frida-carclaims.{{ $domain }}
-{{- else -}}
-frida-carclaims-{{ $env }}.{{ $domain }}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "frida-carclaims.publicUrl" -}}
-https://{{ include "frida-carclaims.route.host" . }}/
-{{- end -}}

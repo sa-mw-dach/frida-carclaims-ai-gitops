@@ -16,11 +16,9 @@ spec:
     helm:
       valueFiles:
         - ../../environments/prod/values.yaml
-      parameters:
-        - name: global.appsDomain
-          value: apps.ocp4.stormshift.coe.muc.redhat.com
   destination:
     server: https://kubernetes.default.svc
     namespace: frida-car-claims-prod
   syncPolicy:
-    syncOptions: []
+    syncOptions:
+      - CreateNamespace=true

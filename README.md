@@ -45,42 +45,7 @@ This is a **public** GitHub repository — ArgoCD can read it over HTTPS without
 
 ## First-time setup
 
-### 1. Configure cluster domain
-
-The cluster's apps domain is configured directly in the ArgoCD Application manifests (`argocd/applications/*.yaml`) via Helm parameters. 
-
-Discover your cluster's apps domain:
-
-```bash
-oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
-```
-
-Update the `global.appsDomain` parameter in each application file:
-- `argocd/applications/dev.yaml`
-- `argocd/applications/stage.yaml`
-- `argocd/applications/prod.yaml`
-
-Example:
-```yaml
-spec:
-  source:
-    helm:
-      parameters:
-        - name: global.appsDomain
-          value: apps.cluster-abc123.example.com
-```
-
-Route hosts are computed automatically from this value:
-
-| Environment | URL |
-|-------------|-----|
-| dev | `https://frida-carclaims-dev.<appsDomain>/` |
-| stage | `https://frida-carclaims-stage.<appsDomain>/` |
-| prod | `https://frida-carclaims.<appsDomain>/` |
-
-To override a single route host, set `frontend.route.host` in the environment values file.
-
-### 2. Create secrets
+### 1. Create secrets
 
 The voice backend requires a Chat API API key. Create this secret in each namespace before the backend pods can start:
 
@@ -99,7 +64,7 @@ oc create secret generic voice-backend-secrets -n frida-carclaims-prod \
 |--------|------------|------|
 | `voice-backend-secrets` | dev, stage, prod | `CHAT_API_KEY` (required), `TRANSCRIPTION_API_KEY` (required) |
 
-### 3. Bootstrap ArgoCD
+### 2. Bootstrap ArgoCD
 
 Apply the app-of-apps to the OpenShift GitOps namespace (one-time):
 
@@ -109,7 +74,7 @@ oc apply -f argocd/bootstrap/app-of-apps.yaml
 
 This creates the root `frida-carclaims-apps` Application in the `openshift-gitops` namespace, which deploys dev, stage, and prod environments.
 
-### 4. Verify
+### 3. Verify
 
 ```bash
 argocd app sync frida-carclaims-dev
@@ -121,8 +86,7 @@ curl -sS -o /dev/null -w "%{http_code}\n" \
 
 ```bash
 helm template frida-carclaims charts/frida-carclaims \
-  -f environments/dev/values.yaml \
-  --set global.appsDomain=apps.mycluster.example.com
+  -f environments/dev/values.yaml
 ```
 
 ## Promotion workflow

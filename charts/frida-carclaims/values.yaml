@@ -2,8 +2,6 @@ global:
   namespace: frida-car-claims-dev
   partOf: frida-carclaims
   environment: dev
-  appsDomain: ""
-  skipNamespace: false
 
 frontend:
   enabled: true

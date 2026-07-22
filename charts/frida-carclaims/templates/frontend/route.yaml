@@ -8,7 +8,7 @@ metadata:
     app: frontend
     {{- include "frida-carclaims.labels" . | nindent 4 }}
 spec:
-  host: {{ include "frida-carclaims.route.host" . | quote }}
+  host: ''
   to:
     kind: Service
     name: frontend
