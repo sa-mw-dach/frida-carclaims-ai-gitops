@@ -50,14 +50,28 @@ This is a **public** GitHub repository — ArgoCD can read it over HTTPS without
 The voice backend requires a Chat API API key. Create this secret in each namespace before the backend pods can start:
 
 ```bash
-oc create secret generic voice-backend-secrets -n frida-carclaims-dev \
-  --from-literal=CHAT_API_KEY='sk-...'
+oc create secret generic voice-backend-secrets \
+  --from-literal=CHAT_API_KEY='sk-...' \
+  --from-literal=TRANSCRIPTION_API_KEY='sk-...' \
+  --dry-run=client -o yaml | oc apply -f - -n frida-car-claims-dev
 
-oc create secret generic voice-backend-secrets -n frida-carclaims-stage \
-  --from-literal=CHAT_API_KEY='sk-...'
+oc create secret generic voice-backend-secrets \
+  --from-literal=CHAT_API_KEY='sk-...' \
+  --from-literal=TRANSCRIPTION_API_KEY='sk-...' \
+  --dry-run=client -o yaml | oc apply -f - -n frida-car-claims-stage
 
-oc create secret generic voice-backend-secrets -n frida-carclaims-prod \
-  --from-literal=CHAT_API_KEY='sk-...'
+oc create secret generic voice-backend-secrets \
+  --from-literal=CHAT_API_KEY='sk-...' \
+  --from-literal=TRANSCRIPTION_API_KEY='sk-...' \
+  --dry-run=client -o yaml | oc apply -f - -n frida-car-claims-prod 
+```
+
+after creating the secrets restart the pods: 
+
+```bash
+oc rollout restart deployment voice-backend -n frida-car-claims-dev
+oc rollout restart deployment voice-backend -n frida-car-claims-stage
+oc rollout restart deployment voice-backend -n frida-car-claims-prod
 ```
 
 | Secret | Namespaces | Keys |
@@ -111,6 +125,6 @@ CI in those repos pushes SHA-tagged images. Update `environments/*/values.yaml` 
 ```
 Browser → OpenShift Route → frontend (nginx)
                               └─ /api/* → backend Service → voice-backend pod
-                                                            ├─ whisper (STT)
+                                                            ├─ whisper (external LLM)
                                                             └─ Chat API (external LLM)
 ```
