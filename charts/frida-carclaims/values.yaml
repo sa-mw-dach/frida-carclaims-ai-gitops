@@ -40,7 +40,7 @@ backend:
       memory: 512Mi
   secrets:
     name: voice-backend-secrets
-  dummy-secrets:
+  dummySecrets:
     enabled: true
   config:
     chatBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
