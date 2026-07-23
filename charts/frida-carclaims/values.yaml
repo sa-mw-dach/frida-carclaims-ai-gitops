@@ -40,6 +40,8 @@ backend:
       memory: 512Mi
   secrets:
     name: voice-backend-secrets
+  dummy-secrets:
+    enabled: true
   config:
     chatBaseUrl: "https://litellm-litemaas.apps.prod.rhoai.rh-aiservices-bu.com/v1/"
     chatModel: "Qwen3.6-35B-A3B"
