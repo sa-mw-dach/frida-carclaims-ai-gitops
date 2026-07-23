@@ -19,6 +19,11 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: frida-car-claims-stage
+  ignoreDifferences:
+    - group: route.openshift.io
+      kind: Route
+      jsonPointers:
+        - /spec/host
   syncPolicy:
     automated:
       prune: true
