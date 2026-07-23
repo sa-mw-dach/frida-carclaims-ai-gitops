@@ -2,6 +2,19 @@
 
 Production GitOps repository for the Frida Car Claims AI stack, deployed via **Helm** and **ArgoCD** with a git promotion workflow across three environments.
 
+## RHDP Integration
+
+1. Login to RHDP: [RHDP](https://catalog.demo.redhat.com/catalog/all)
+2. go to the RHDP [Field Sourced Content - OpenShift Base](https://catalog.demo.redhat.com/catalog/babylon-catalog-prod?item=babylon-catalog-prod/published.ocp-field-asset.prod&utm_source=webapp&utm_medium=share-link) catalog item
+3. Click `Order`
+4. say `Existing Gitops Repo?`: Yes
+5. Enter `GitOps Repo`: `https://github.com/sa-mw-dach/frida-carclaims-ai-gitops.git`
+6. Enter `GitOps Revision`: `main`
+7. Enter `GitOps Path`: `argocd/bootstrap`
+8. Click `Order`
+
+After provisioning is done, you just have to [create the secrets](#first-time-setup) to configure the LLMs. 
+
 ## Stack
 
 | Component | Description |
