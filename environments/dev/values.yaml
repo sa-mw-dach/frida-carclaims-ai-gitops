@@ -15,11 +15,11 @@ backend:
     repository: quay.io/mklaasse/frida-carclaims-backend-ai
     tag: latest
   config:
-    chatBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1/"
-    chatModel: "openai/deepseek-r1-distill-qwen-14b"
+    chatBaseUrl: "https://api.openai.com/v1/"
+    chatModel: "gpt-4o-mini"
     chatTimeout: "120s"
-    transcriptionBaseUrl: "https://maas-rhdp.apps.maas.redhatworkshops.io/v1"
-    transcriptionModel: "whisper-small"
+    transcriptionBaseUrl: "https://api.openai.com/v1/"
+    transcriptionModel: "whisper-1"
     logLevelClickKlaassen: "INFO"
     logLevelLangchain4j: "INFO"
     httpAccessLogEnabled: "true"
