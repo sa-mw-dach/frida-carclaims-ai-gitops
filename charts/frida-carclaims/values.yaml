@@ -22,6 +22,9 @@ frontend:
     host: ""
     tls:
       termination: edge
+  brand:
+    font: ""
+    faviconSourceUrl: ""
 
 backend:
   enabled: true

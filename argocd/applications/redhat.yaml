@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frida-carclaims-redhat
+  labels:
+    app.kubernetes.io/part-of: frida-carclaims
+    environment: redhat
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sa-mw-dach/frida-carclaims-ai-gitops.git
+    targetRevision: main
+    path: charts/frida-carclaims
+    helm:
+      valueFiles:
+        - ../../environments/redhat/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frida-car-claims-redhat
+  ignoreDifferences:
+    - group: route.openshift.io
+      kind: Route
+      jsonPointers:
+        - /spec/host
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

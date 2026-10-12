@@ -1,0 +1,28 @@
+global:
+  namespace: frida-car-claims-redhat
+  partOf: frida-carclaims
+  environment: redhat
+  skipNamespace: true
+
+frontend:
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-frontend
+    tag: redhat
+  brand:
+    font: "red-hat-text"
+    faviconSourceUrl: "https://www.redhat.com/favicon.ico"
+
+backend:
+  serviceName: frida-carclaims-redhat
+  image:
+    repository: quay.io/mklaasse/frida-carclaims-backend-ai
+    tag: latest
+  config:
+    chatBaseUrl: "https://api.openai.com/v1/"
+    chatModel: "gpt-4o-mini"
+    chatTimeout: "120s"
+    transcriptionBaseUrl: "https://api.openai.com/v1/"
+    transcriptionModel: "whisper-1"
+    logLevelClickKlaassen: "INFO"
+    logLevelLangchain4j: "INFO"
+    httpAccessLogEnabled: "true"
