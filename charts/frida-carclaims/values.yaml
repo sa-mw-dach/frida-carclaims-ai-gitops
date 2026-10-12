@@ -46,6 +46,7 @@ frontendRedhat:
       termination: edge
   brand:
     font: "red-hat-text"
+    logoSourceUrl: "https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg"
     faviconSourceUrl: "https://www.redhat.com/favicon.ico"
 
 backend:

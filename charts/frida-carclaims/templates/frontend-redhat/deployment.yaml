@@ -29,6 +29,8 @@ spec:
               value: http://{{ .Values.backend.serviceName }}:8080
             - name: BRAND_FONT
               value: {{ .Values.frontendRedhat.brand.font | quote }}
+            - name: LOGO_SOURCE_URL
+              value: {{ .Values.frontendRedhat.brand.logoSourceUrl | quote }}
             - name: FAVICON_SOURCE_URL
               value: {{ .Values.frontendRedhat.brand.faviconSourceUrl | quote }}
           resources:
