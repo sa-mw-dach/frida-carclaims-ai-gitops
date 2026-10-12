@@ -12,7 +12,7 @@ frontendRedhat:
   replicas: 2
   image:
     repository: quay.io/mklaasse/frida-carclaims-frontend
-    tag: latest
+    tag: redhat
 
 backend:
   replicas: 2
