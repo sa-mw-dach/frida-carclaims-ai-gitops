@@ -1,0 +1,48 @@
+{{- if .Values.frontendRedhat.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-redhat
+  namespace: {{ include "frida-carclaims.namespace" . }}
+  labels:
+    app: frontend-redhat
+    {{- include "frida-carclaims.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontendRedhat.replicas }}
+  selector:
+    matchLabels:
+      app: frontend-redhat
+  template:
+    metadata:
+      labels:
+        app: frontend-redhat
+    spec:
+      containers:
+        - name: frontend-redhat
+          image: {{ printf "%s:%s" .Values.frontendRedhat.image.repository .Values.frontendRedhat.image.tag }}
+          imagePullPolicy: {{ .Values.frontendRedhat.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: VOICE_API_BACKEND
+              value: http://{{ .Values.backend.serviceName }}:8080
+            - name: BRAND_FONT
+              value: {{ .Values.frontendRedhat.brand.font | quote }}
+            - name: FAVICON_SOURCE_URL
+              value: {{ .Values.frontendRedhat.brand.faviconSourceUrl | quote }}
+          resources:
+            {{- toYaml .Values.frontendRedhat.resources | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+{{- end }}

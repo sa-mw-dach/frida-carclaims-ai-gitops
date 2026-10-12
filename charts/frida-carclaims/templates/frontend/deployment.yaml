@@ -27,6 +27,14 @@ spec:
           env:
             - name: VOICE_API_BACKEND
               value: http://{{ .Values.backend.serviceName }}:8080
+            {{- with .Values.frontend.brand.font }}
+            - name: BRAND_FONT
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.frontend.brand.faviconSourceUrl }}
+            - name: FAVICON_SOURCE_URL
+              value: {{ . | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           readinessProbe:

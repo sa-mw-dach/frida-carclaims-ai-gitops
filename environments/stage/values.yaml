@@ -9,6 +9,9 @@ frontend:
     repository: quay.io/mklaasse/frida-carclaims-frontend
     tag: latest
 
+frontendRedhat:
+  enabled: true
+
 backend:
   serviceName: frida-carclaims-stage
   image:

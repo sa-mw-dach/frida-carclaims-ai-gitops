@@ -6,6 +6,10 @@ global:
 
 frontend:
   replicas: 2
+
+frontendRedhat:
+  enabled: true
+  replicas: 2
   image:
     repository: quay.io/mklaasse/frida-carclaims-frontend
     tag: latest

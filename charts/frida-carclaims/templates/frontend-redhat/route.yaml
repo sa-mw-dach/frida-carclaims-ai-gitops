@@ -1,0 +1,19 @@
+{{- if and .Values.frontendRedhat.enabled .Values.frontendRedhat.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: frontend-redhat
+  namespace: {{ include "frida-carclaims.namespace" . }}
+  labels:
+    app: frontend-redhat
+    {{- include "frida-carclaims.labels" . | nindent 4 }}
+spec:
+  host: ''
+  to:
+    kind: Service
+    name: frontend-redhat
+  port:
+    targetPort: http
+  tls:
+    termination: {{ .Values.frontendRedhat.route.tls.termination }}
+{{- end }}
